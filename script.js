@@ -13,12 +13,19 @@ function writePassword() {
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 
+//random functions
+var ranGen = {
+  upCase: getUpperCase,
+  lowCase: getLowerCase,
+  num: getNumber,
+  spec: getSpecialChar
+};
 
 //Generator Function 
-funtion generatePassword() {
+function generatePassword(){
 
   //window alert informing the users about the password criteria
-  window.alert("Select the password character type(s) you should include.\n (lower & upper case letters, numbers, and special characters");
+  alert("Select the password character type(s) you should include.\n (lower & upper case letters, numbers, and special characters");
 
   //dialog boxes that comfirms the users criteria selection
 
@@ -43,11 +50,64 @@ funtion generatePassword() {
 
   //ask users for the desired password string length
 
-  var passLenght = prompt("How many charactors do you want your password to be? \n Password must have a lenght between 8-128");
+  var passLength = prompt("How many charactors do you want your password to be? \n Password must have a lenght between 8-128");
 
-  if(passLenght === null){
+  if(passLength === null){
     return;
   }
   
+  //password length
+  while (passLength <8 || passLength > 128 || passLength ===""){
+    alert("Please input a number between 8-128.");
+    var passLength = prompt("How many characters do you want your password to be?\n Please enter a number from 8-128");
+    
+    //if users cancel's
+    if(passLength === null){
+      return;
+    }
+  }
 
+  console.log("Password Length: " + passLength + " characters" );
+
+  //create password
+
+  var generatedPassword ="";
+
+  var passArray =[
+    { upCase },
+    { lowCase },
+    { num },
+    { spec }
+  ].filter((item) => Object.values(item) [0]);
+
+  for (let i = 0; i < passLength; i += userChoices){
+    passArray.forEach((type) => {
+      var funcName = Object.keys(type) [0];
+      generatedPassword += ranGen[funcName]();
+    });
+  }
+  console.log("User's new Password is " + generatedPassword);
+
+  const password = generatedPassword.slice(0, passLength);
+
+  return password;
 }
+
+  //random character Generaters
+  function getUpperCase(){
+    const upCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return upCase[Math.floor(Math.random() * upCase.length)];
+  }
+  function getLowerCase(){
+    const lowCase = "abcdefghijklmnopqrstuvwxyz";
+    return lowCase[Math.floor(Math.random() * lowCase.length)];
+  }
+  function getNumber(){
+    const num = "0123456789";
+    return num[Math.floor(Math.random() * num.length)];
+  }
+  function getSpecialChar(){
+    const spec = "!@#$%^&*()-_=+,./<>?[]{}`~";
+    return spec[Math.floor(Math.random() * spec.length)];
+  }
+
